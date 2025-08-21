@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://asteca2.github.io/Site---VORTEX/",
   "scripts": {
   "dev": "vite",
   "build": "vite build",
