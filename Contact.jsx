@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Mail, Phone, MapPin, Send, MessageCircle } from 'lucide-react'
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Mail, Phone, MapPin, Send, MessageCircle } from 'lucide-react';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -9,67 +9,86 @@ const Contact = () => {
     phone: '',
     subject: '',
     message: '',
-    projectType: ''
-  })
+    projectType: '',
+  });
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
+  // ESTA É A FUNÇÃO ATUALIZADA
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    
-    // Aqui será implementada a integração com o backend
-    console.log('Dados do formulário:', formData)
-    
-    // Simular envio
-    setTimeout(() => {
-      setIsSubmitting(false)
-      alert('Mensagem enviada com sucesso! Entraremos em contato em breve.')
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    // A sua URL da Render já está aqui
+    const backendUrl = 'https://portfolio-backend-onmk.onrender.com/api/contact';
+
+    try {
+      const response = await fetch(backendUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Falha ao enviar a mensagem.');
+      }
+
+      alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
+      // Limpa o formulário após o envio bem-sucedido
       setFormData({
         name: '',
         email: '',
         phone: '',
         subject: '',
         message: '',
-        projectType: ''
-      })
-    }, 2000)
-  }
+        projectType: '',
+      });
+    } catch (error) {
+      console.error('Erro ao enviar mensagem:', error);
+      alert(`Erro: ${error.message}`);
+    } finally {
+      // Garante que o botão de envio seja reativado, mesmo em caso de erro
+      setIsSubmitting(false);
+    }
+  };
 
   const contactInfo = [
     {
       icon: <Mail className="text-blue-600" size={24} />,
       title: 'Email',
       content: 'contato@designstudio.com',
-      link: 'mailto:contato@designstudio.com'
+      link: 'mailto:contato@designstudio.com',
     },
     {
       icon: <Phone className="text-green-600" size={24} />,
       title: 'Telefone',
       content: '+55 (11) 99999-9999',
-      link: 'tel:+5511999999999'
+      link: 'tel:+5511999999999',
     },
     {
       icon: <MapPin className="text-red-600" size={24} />,
       title: 'Localização',
       content: 'São Paulo, SP - Brasil',
-      link: null
+      link: null,
     },
     {
       icon: <MessageCircle className="text-purple-600" size={24} />,
       title: 'WhatsApp',
       content: '+55 (11) 99999-9999',
-      link: 'https://wa.me/5511999999999'
-    }
-  ]
+      link: 'https://wa.me/5511999999999',
+    },
+  ];
 
   const projectTypes = [
     'Design Gráfico',
@@ -77,13 +96,12 @@ const Contact = () => {
     'Identidade Visual',
     'Website',
     'Marketing Digital',
-    'Outro'
-  ]
+    'Outro',
+  ];
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Entre em Contato
@@ -92,20 +110,15 @@ const Contact = () => {
             Pronto para dar vida ao seu projeto? Entre em contato conosco e vamos criar algo incrível juntos!
           </p>
         </div>
-
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Information */}
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               Informações de Contato
             </h2>
-            
             <div className="space-y-6 mb-8">
               {contactInfo.map((info, index) => (
                 <div key={index} className="flex items-center space-x-4 p-4 bg-white rounded-lg shadow-sm">
-                  <div className="flex-shrink-0">
-                    {info.icon}
-                  </div>
+                  <div className="flex-shrink-0">{info.icon}</div>
                   <div>
                     <h3 className="font-semibold text-gray-900">{info.title}</h3>
                     {info.link ? (
@@ -124,8 +137,6 @@ const Contact = () => {
                 </div>
               ))}
             </div>
-
-            {/* Business Hours */}
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
                 Horário de Atendimento
@@ -146,15 +157,11 @@ const Contact = () => {
               </div>
             </div>
           </div>
-
-          {/* Contact Form */}
           <div className="bg-white p-8 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               Envie sua Mensagem
             </h2>
-
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Nome */}
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                   Nome Completo *
@@ -170,8 +177,6 @@ const Contact = () => {
                   placeholder="Seu nome completo"
                 />
               </div>
-
-              {/* Email */}
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                   Email *
@@ -187,8 +192,6 @@ const Contact = () => {
                   placeholder="seu@email.com"
                 />
               </div>
-
-              {/* Telefone */}
               <div>
                 <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
                   Telefone
@@ -203,8 +206,6 @@ const Contact = () => {
                   placeholder="(11) 99999-9999"
                 />
               </div>
-
-              {/* Tipo de Projeto */}
               <div>
                 <label htmlFor="projectType" className="block text-sm font-medium text-gray-700 mb-2">
                   Tipo de Projeto
@@ -222,8 +223,6 @@ const Contact = () => {
                   ))}
                 </select>
               </div>
-
-              {/* Assunto */}
               <div>
                 <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
                   Assunto *
@@ -239,8 +238,6 @@ const Contact = () => {
                   placeholder="Assunto da sua mensagem"
                 />
               </div>
-
-              {/* Mensagem */}
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
                   Mensagem *
@@ -256,8 +253,6 @@ const Contact = () => {
                   placeholder="Conte-nos sobre seu projeto..."
                 />
               </div>
-
-              {/* Submit Button */}
               <Button
                 type="submit"
                 disabled={isSubmitting}
@@ -281,8 +276,7 @@ const Contact = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Contact
-
+export default Contact;
