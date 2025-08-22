@@ -1,9 +1,4 @@
-# Dentro de models.py
-
-from flask_sqlalchemy import SQLAlchemy  # <<< ADICIONEI ESTA LINHA
-db = SQLAlchemy()                        # <<< E ESTA, PARA CRIAR O OBJETO DB AQUI
-
-# O resto do seu código está perfeito e permanece igual.
+from src.models.user import db
 from datetime import datetime
 import json
 
@@ -95,3 +90,4 @@ class ContactMessage(db.Model):
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'is_read': self.is_read
         }
+
