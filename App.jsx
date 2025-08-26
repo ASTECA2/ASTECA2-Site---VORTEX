@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import './App.css'
 import Header from './components/Header'
-import Home from './components/Home'
+import HomeUpdated from './components/HomeUpdated'
 import Portfolio from './components/Portfolio'
 import Contact from './components/Contact'
-import Admin from './components/Admin'
+import AdminUpdated from './components/AdminUpdated'
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home')
@@ -12,15 +12,15 @@ function App() {
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
-        return <Home />
+        return <HomeUpdated setCurrentPage={setCurrentPage} />
       case 'portfolio':
         return <Portfolio />
       case 'contact':
         return <Contact />
       case 'admin':
-        return <Admin />
+        return <AdminUpdated />
       default:
-        return <Home />
+        return <HomeUpdated setCurrentPage={setCurrentPage} />
     }
   }
 
@@ -35,3 +35,4 @@ function App() {
 }
 
 export default App
+
